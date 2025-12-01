@@ -4,8 +4,11 @@ namespace Domain
 {
     public class Category
     {
-        public Guid Id { get; }
-        public string Name { get; }
+        public Guid Id { get; private set; }
+        public string Name { get; private set; }
+
+        // EF Core требует конструктор без параметров
+        private Category() { }
 
         public Category(string name)
         {
