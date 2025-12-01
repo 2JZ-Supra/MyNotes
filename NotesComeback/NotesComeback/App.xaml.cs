@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace Notes
+namespace NotesComeback
 {
     /// <summary>
     /// Interaction logic for App.xaml
