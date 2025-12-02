@@ -8,5 +8,7 @@ namespace Data.Interfaces
         ObservableCollection<Note> Notes { get; }
         void Add(Note note);
         void Remove(Note note);
+
+        void Update(Note note);
     }
 }

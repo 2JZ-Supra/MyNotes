@@ -1,6 +1,7 @@
 ﻿<Window x:Class="UI.NoteWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
         Title="Заметка"
         Height="400"
         Width="500"
@@ -32,6 +33,7 @@
             VerticalAlignment="Center"
             Width="350">
                     <TextBox x:Name="TitleTextBox"
+                             MaxLength="50"
                  Background="Transparent"
                  BorderThickness="0"
                  Padding="8"

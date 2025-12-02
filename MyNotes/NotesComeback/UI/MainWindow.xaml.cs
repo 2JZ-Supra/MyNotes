@@ -8,6 +8,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace UI
@@ -185,7 +186,7 @@ namespace UI
             }
         }
 
-        private void StatisticsMenuItem_Click(object sender, RoutedEventArgs e)
+        private void StatisticsButton_Click(object sender, RoutedEventArgs e)
         {
             var window = new StatisticsWindow();
             window.ShowDialog();
@@ -208,6 +209,19 @@ namespace UI
             {
                 _notesView?.Refresh();
             }), System.Windows.Threading.DispatcherPriority.Background);
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                this.DragMove();
+            }
         }
     }
 }

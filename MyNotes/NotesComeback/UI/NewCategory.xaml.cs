@@ -2,6 +2,7 @@
 using Services;
 using System;
 using System.Windows;
+using System.Windows.Input;
 
 namespace UI
 {
@@ -37,6 +38,14 @@ namespace UI
             AppServices.CategoriesRepo.Add(new Category(name)); // ObservableCollection — хорошо уведомит биндинги
             this.DialogResult = true;
             this.Close();
+        }
+
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                this.DragMove();
+            }
         }
     }
 }

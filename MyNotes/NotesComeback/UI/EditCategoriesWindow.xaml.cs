@@ -1,8 +1,9 @@
-﻿using System.Linq;
+﻿using Domain;
+using Services;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Domain;
-using Services;
+using System.Windows.Input;
 
 namespace UI
 {
@@ -113,6 +114,14 @@ namespace UI
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                this.DragMove();
+            }
         }
     }
 }

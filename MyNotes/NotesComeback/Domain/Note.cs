@@ -54,7 +54,19 @@ namespace Domain
 
         public void UpdateTitle(string newTitle) => Title = newTitle;
         public void UpdateContent(string newContent) => Content = newContent;
-        public void SetCategories(IEnumerable<Category> categories) => Categories = categories.ToList();
+        public void SetCategories(IEnumerable<Category> categories)
+        {
+            if (Categories == null)
+                Categories = new List<Category>();
+
+            Categories.Clear();
+            foreach (var c in categories)
+                Categories.Add(c);
+
+            OnPropertyChanged(nameof(Categories));
+            OnPropertyChanged(nameof(CategoriesDisplay));
+        }
+
         public void SetFavorite(bool value) => IsFavorite = value;
 
         public string CategoriesDisplay =>
