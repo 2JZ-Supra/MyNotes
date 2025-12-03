@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Services;
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -28,14 +29,13 @@ namespace UI
                 return;
             }
 
-            // Не допускаем дубликатов (по имени)
-            if (AppServices.CategoriesRepo.Categories.Any(c => string.Equals(c.Name, name, StringComparison.OrdinalIgnoreCase)))
+            if (AppServices.CategoriesRepo.GetAll().Any(c => string.Equals(c.Name, name, StringComparison.OrdinalIgnoreCase)))
             {
                 MessageBox.Show("Категория с таким именем уже существует.", "Внимание", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
-            AppServices.CategoriesRepo.Add(new Category(name)); // ObservableCollection — хорошо уведомит биндинги
+            AppServices.CategoriesRepo.Add(new Category(name)); 
             this.DialogResult = true;
             this.Close();
         }

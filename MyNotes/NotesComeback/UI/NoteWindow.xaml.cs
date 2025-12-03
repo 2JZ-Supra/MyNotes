@@ -24,7 +24,6 @@ namespace UI
 
             if (note == null)
             {
-                // создаём новую заметку (но НЕ объект Note!)
                 _isNew = true;
             }
             else
@@ -37,7 +36,7 @@ namespace UI
                 _tempCategories = note.Categories.ToList();
                 _tempIsFavorite = note.IsFavorite;
 
-                EditingNote = note; // оригинальная заметка (мы её перезапишем при сохранении)
+                EditingNote = note; // оригинальная заметка 
             }
 
             DataToControls();
@@ -80,7 +79,6 @@ namespace UI
 
             if (_isNew)
             {
-                // создаём новую заметку здесь!
                 EditingNote = new Note(
                     title: _tempTitle,
                     content: _tempContent,
@@ -101,13 +99,13 @@ namespace UI
                     EditingNote.SetFavorite(_tempIsFavorite);
 
                     AppServices.NotesRepo.Update(EditingNote);
-                    // Обновляем объект в UI коллекции тем, что лежит в БД
-                    var updated = AppServices.NotesRepo.Notes.FirstOrDefault(n => n.Id == EditingNote.Id);
+
+                    var updated = AppServices.NotesRepo.GetAll().FirstOrDefault(n => n.Id == EditingNote.Id);
                     if (updated != null)
                     {
-                        int index = AppServices.NotesRepo.Notes.IndexOf(EditingNote);
+                        int index = AppServices.NotesRepo.GetAll().IndexOf(EditingNote);
                         if (index >= 0)
-                            AppServices.NotesRepo.Notes[index] = updated;
+                            AppServices.NotesRepo.GetAll()[index] = updated;
                     }
 
                 }

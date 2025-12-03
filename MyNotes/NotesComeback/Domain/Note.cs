@@ -13,14 +13,12 @@ namespace Domain
         private string _content = "";
         private bool _isFavorite;
 
-        // EF Core должен уметь менять коллекцию
         public List<Category> Categories { get; private set; } = new();
 
         public DateTime CreatedAt { get; private set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        // EF Core требует конструктор без параметров
         private Note() { }
 
         public Note(string title, string content = "", IEnumerable<Category>? categories = null, bool isFavorite = false)

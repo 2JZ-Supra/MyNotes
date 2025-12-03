@@ -1,14 +1,16 @@
 ﻿using Domain;
-using System.Collections.ObjectModel;
+using System;
+using System.Collections.Generic;
 
 namespace Data.Interfaces
 {
     public interface INoteRepository
     {
-        ObservableCollection<Note> Notes { get; }
+        event EventHandler? NotesChanged;
+
+        List<Note> GetAll();
         void Add(Note note);
         void Remove(Note note);
-
         void Update(Note note);
     }
 }

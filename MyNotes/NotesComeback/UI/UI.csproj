@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Data.InMemory\Data.InMemory.csproj" />
     <ProjectReference Include="..\Data.Interfaces\Data.Interfaces.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\NotesComeback.Data.SqlServer\NotesComeback.Data.SqlServer.csproj" />

@@ -23,7 +23,7 @@ namespace UI
             Brushes.Tomato, Brushes.OliveDrab, Brushes.MediumVioletRed, Brushes.CornflowerBlue
         };
 
-        // Для дебаунса / предотвращения множественных отрисовок
+        // Для предотвращения множественных отрисовок
         private bool _drawScheduled = false;
         private Dictionary<string, int>? _pendingData = null;
 
@@ -59,10 +59,12 @@ namespace UI
             CategoryBarCanvas.LayoutUpdated -= CategoryBarCanvas_LayoutUpdated;
         }
 
+        // фильтр по периоду даты
+
         private void InitFilters()
         {
             // Годы заметок
-            var years = AppServices.NotesRepo.Notes
+            var years = AppServices.NotesRepo.GetAll()
                 .Select(n => n.CreatedAt.Year)
                 .Distinct()
                 .OrderBy(y => y)
@@ -77,7 +79,7 @@ namespace UI
             YearFromCombo.SelectedIndex = 0;
             YearToCombo.SelectedIndex = years.Count - 1;
 
-            // Месяцы — теперь MonthItem
+            // месяцы заметок
             var monthNames = Enumerable.Range(1, 12)
                 .Select(m => new MonthItem
                 {
@@ -101,7 +103,7 @@ namespace UI
 
         private void StatisticsWindow_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            // Просто обновляем статистику — реальная отрисовка будет дебаунситься
+            // обновляем статистику 
             RefreshStatistics();
         }
 
@@ -127,8 +129,7 @@ namespace UI
                     n.CreatedAt.Year >= yearFrom &&
                     n.CreatedAt.Year <= yearTo &&
                     n.CreatedAt.Month >= monthFrom.Number &&
-                    n.CreatedAt.Month <= monthTo.Number
-                );
+                    n.CreatedAt.Month <= monthTo.Number);
             }
 
             return notes;
@@ -138,23 +139,22 @@ namespace UI
 
         private void RefreshStatistics()
         {
-            NotesCountTextBlock.Text = $"Заметок: {AppServices.NotesRepo.Notes.Count}";
-            CategoriesCountTextBlock.Text = $"Категорий: {AppServices.CategoriesRepo.Categories.Count}";
+            NotesCountTextBlock.Text = $"Заметок: {AppServices.NotesRepo.GetAll().Count}";
+            CategoriesCountTextBlock.Text = $"Категорий: {AppServices.CategoriesRepo.GetAll().Count}";
 
-            var filtered = ApplyFilters(AppServices.NotesRepo.Notes);
+            var filtered = ApplyFilters(AppServices.NotesRepo.GetAll());
 
             var byMonth = filtered
                 .GroupBy(n => n.CreatedAt.Month)
                 .OrderBy(g => g.Key)
                 .ToDictionary(
                     g => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(g.Key),
-                    g => g.Count()
-                );
+                    g => g.Count());
 
             // Подготовим данные для отложенной отрисовки
             _pendingData = byMonth;
 
-            // Если отрисовка уже запланирована — ничего не делаем (выполнится одна отрисовка).
+            // Если отрисовка уже запланирована — ничего не делаем
             if (_drawScheduled) return;
 
             _drawScheduled = true;
@@ -187,7 +187,7 @@ namespace UI
             PieCanvas.Children.Clear();
             LegendPanel.Children.Clear();
 
-            // Берём реальные доступные размеры (может быть 0 если ещё не измерено)
+            // Берём реальные доступные размеры
             double availW = PieCanvas.ActualWidth;
             double availH = PieCanvas.ActualHeight;
 
@@ -315,7 +315,7 @@ namespace UI
             CategoryBarCanvas.Children.Clear();
             CategoryLegendPanel.Children.Clear();
 
-            var groups = AppServices.NotesRepo.Notes
+            var groups = AppServices.NotesRepo.GetAll()
                 .SelectMany(n => n.Categories)
                 .GroupBy(c => c.Name)
                 .Select(g => new { Category = g.Key, Count = g.Count() })

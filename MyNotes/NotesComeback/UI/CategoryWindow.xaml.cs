@@ -32,7 +32,7 @@ namespace UI
             if (AppServices.CategoriesRepo == null)
                 return;
 
-            foreach (var cat in AppServices.CategoriesRepo.Categories)
+            foreach (var cat in AppServices.CategoriesRepo.GetAll())
             {
                 var cb = new CheckBox
                 {
@@ -67,7 +67,7 @@ namespace UI
             if (AppServices.NotesRepo != null)
             {
                 // Проходим по копии коллекции заметок, чтобы безопасно модифицировать категории внутри заметок
-                foreach (var note in AppServices.NotesRepo.Notes.ToList())
+                foreach (var note in AppServices.NotesRepo.GetAll().ToList())
                 {
                     // Если заметка содержит такую категорию — удаляем её
                     if (note.Categories.Any(c => c.Id == cat.Id))

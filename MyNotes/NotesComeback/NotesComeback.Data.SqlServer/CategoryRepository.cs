@@ -1,6 +1,8 @@
 ﻿using Data.Interfaces;
 using Domain;
-using System.Collections.ObjectModel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NotesComeback.Data.SqlServer
 {
@@ -8,28 +10,35 @@ namespace NotesComeback.Data.SqlServer
     {
         private readonly NotesDbContext _db;
 
-        public ObservableCollection<Category> Categories { get; } = new();
+        // уведомляем UI об изменении 
+        public event EventHandler? CategoriesChanged;
 
         public CategoryRepository(NotesDbContext db)
         {
             _db = db;
-
-            foreach (var c in _db.Categories)
-                Categories.Add(c);
         }
 
         public void Add(Category category)
         {
             _db.Categories.Add(category);
             _db.SaveChanges();
-            Categories.Add(category);
+
+            // уведомляем подписчиков
+            CategoriesChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public void Remove(Category category)
         {
             _db.Categories.Remove(category);
             _db.SaveChanges();
-            Categories.Remove(category);
+
+            // уведомляем подписчиков
+            CategoriesChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public List<Category> GetAll()
+        {
+            return _db.Categories.ToList();
         }
     }
 }
