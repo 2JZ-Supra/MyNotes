@@ -1,0 +1,175 @@
+﻿<Window x:Class="UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="JustJot! - Просто набросай!" 
+        Height="500" 
+        Width="850"
+        ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" 
+                Background="#f0f0f0" 
+                Padding="10"
+                BorderBrush="#cccccc"
+                BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <Button x:Name="NewNoteButton" 
+                            Content="Новая заметка" 
+                            Padding="10,5"
+                            Margin="0, 0, 0, 0"
+                            Height="30"
+                            Width="110"
+                            Click="NewNoteButton_Click"
+                            IsEnabled="False"/>
+
+                    <Button x:Name="CategoriesButton" 
+                            Content="Категории" 
+                            Padding="10,5"
+                            Margin="5, 0, 0, 0"
+                            Height="30"
+                            Width="100"
+                            Click="CategoriesButton_Click"
+                            IsEnabled="False"/>
+
+                    <Button x:Name="StatisticsButton" 
+                            Content="Статистика" 
+                            Padding="10,5"
+                            Margin="5, 0, 0, 0"
+                            Height="30"
+                            Width="100"
+                            Click="StatisticsButton_Click"
+                            IsEnabled="False"/>
+                </StackPanel>
+
+                <TextBlock Grid.Column="1" 
+                           Text="Категория:" 
+                           VerticalAlignment="Center"
+                           Margin="30, 0, 0, 0"/>
+
+                <ComboBox Grid.Column="2" 
+                          x:Name="CategoryComboBox" 
+                          Width="110"
+                          Height="30"
+                          Margin="5,0,0,0"
+                          SelectionChanged="CategoryComboBox_SelectionChanged"
+                          IsEnabled="False">
+                    <ComboBoxItem Content="Все категории" IsSelected="True"/>
+                </ComboBox>
+
+                <CheckBox Grid.Column="3"
+                          x:Name="FavoriteCheckBox" 
+                          Content="Только избранное"
+                          VerticalAlignment="Center"
+                          HorizontalAlignment="Left"
+                          Margin="30,0,0,0"
+                          Checked="FavoriteCheckBox_Checked"
+                          Unchecked="FavoriteCheckBox_Unchecked"
+                          IsEnabled="False"/>
+
+                <Button Grid.Column="4"
+                        x:Name="RefreshButton" 
+                        Content="Обновить"
+                        Padding="10,5"
+                        Margin="30,0,0,0"
+                        Height="30"
+                        Width="100"
+                        Click="RefreshButton_Click"/>
+            </Grid>
+        </Border>
+
+        <DataGrid Grid.Row="1" 
+                  x:Name="NotesDataGrid"
+                  Margin="10"
+                  AutoGenerateColumns="False"
+                  CanUserReorderColumns="False"
+                  CanUserSortColumns="False"
+                  CanUserResizeColumns="True"
+                  CanUserAddRows="False"
+                  SelectionMode="Single"
+                  IsReadOnly="True"
+                  HeadersVisibility="Column"
+                  GridLinesVisibility="Horizontal"
+                  BorderThickness="1"
+                  BorderBrush="#cccccc"
+                  SelectionChanged="NotesDataGrid_SelectionChanged"
+                  MouseDoubleClick="NotesDataGrid_MouseDoubleClick"
+                  IsEnabled="False"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  SelectionUnit="FullRow">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Заголовок" 
+                                    Width="1*" 
+                                    MinWidth="90"
+                                    FontWeight="Bold"
+                                    FontSize="12"
+                                    Binding="{Binding Title}"/>
+
+                <DataGridTextColumn Header="Содержание" 
+                                    Width="4*" 
+                                    MinWidth="200"
+                                    Binding="{Binding Content}"/>
+
+                <DataGridTextColumn Header="Категории" 
+                                    Width="2*" 
+                                    MinWidth="100"
+                                    Binding="{Binding CategoriesString}"/>
+
+                <DataGridTextColumn Header="Дата создания" 
+                                    Width="90" 
+                                    CanUserResize="False"
+                                    Binding="{Binding CreatedAt, StringFormat='dd.MM.yyyy'}"/>
+
+                <DataGridTemplateColumn Header="Избранное" 
+                                        Width="75" 
+                                        CanUserResize="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsFavorite}" 
+                                      IsEnabled="False"
+                                      HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Border Grid.Row="2" 
+                Background="#f8f8f8" 
+                Padding="10"
+                BorderBrush="#cccccc"
+                BorderThickness="0,1,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="DeleteNoteButton" 
+                        Content="Удалить заметку"
+                        Padding="10,5"
+                        Margin="5"
+                        MinWidth="100"
+                        Height="30"
+                        Background="#ff6b6b"
+                        Foreground="White"
+                        Click="DeleteNoteButton_Click"
+                        IsEnabled="False"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
